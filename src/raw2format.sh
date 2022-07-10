@@ -2,7 +2,7 @@
 #
 # FileName: 	raw2format
 # CreatedDate:  2022-07-10 20:52:42 +0900
-# LastModified: 2022-07-11 00:28:36 +0900
+# LastModified: 2022-07-11 00:30:29 +0900
 #
 
 _usage(){
@@ -33,20 +33,20 @@ BEGIN {
     i=0
     line=""
 }
-{
-    if (substr($1, 0, 2) == month){
-        print line
-        line=$1 "\t"
+substr($1, 0, 2) == month{
+    print line
+    line=$1 "\t"
+}
+substr($1, 0, 2) != month{
+    if (NF == 1){
+        line=line $1 "\t"
     }
     else{
-        if (NF == 1){
-            line=line $1 "\t"
-        }
-        else{
-            line=line $0
-        }
+        line=line $0
     }
 }
-' > $base_format/$format_file
-nkf -s --overwrite $base_format/$format_file
+
+'
+#> $base_format/$format_file
+#nkf -s --overwrite $base_format/$format_file
 return
