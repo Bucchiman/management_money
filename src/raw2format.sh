@@ -2,7 +2,7 @@
 #
 # FileName: 	raw2format
 # CreatedDate:  2022-07-10 20:52:42 +0900
-# LastModified: 2022-07-10 22:36:07 +0900
+# LastModified: 2022-07-10 23:00:54 +0900
 #
 
 _usage(){
@@ -41,11 +41,17 @@ BEGIN {
         line=$1 ", "
     }
     else{
-        for(i=1; i<NF; i++){
-            line=line $i ", "
+        if (NF == 1){
+            line=line $1 ", "
         }
-        line=line $NF
+        else{
+            for(i=1; i<NF; i++){
+                line=line $i ", "
+            }
+            line=line $NF
+
+        }
     }
 }' > $base_format/$format_file
-
+nkf -s --overwrite $base_format/$format_file
 return
