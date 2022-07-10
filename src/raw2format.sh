@@ -2,7 +2,7 @@
 #
 # FileName: 	raw2format
 # CreatedDate:  2022-07-10 20:52:42 +0900
-# LastModified: 2022-07-11 00:38:04 +0900
+# LastModified: 2022-07-11 00:42:30 +0900
 #
 
 _usage(){
@@ -50,5 +50,6 @@ substr($1, 0, 2) != month{
 }
 
 ' > $base_format/$format_file
-nkf -s --overwrite $base_format/$format_file
+#nkf -s --overwrite $base_format/$format_file
+nkf -w8 --overwrite $base_format/$format_file
 return
