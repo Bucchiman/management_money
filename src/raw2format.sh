@@ -2,7 +2,7 @@
 #
 # FileName: 	raw2format
 # CreatedDate:  2022-07-10 20:52:42 +0900
-# LastModified: 2022-07-10 23:00:54 +0900
+# LastModified: 2022-07-11 00:09:33 +0900
 #
 
 _usage(){
@@ -35,23 +35,21 @@ BEGIN {
 }
 {
     if (substr($1, 0, 2) == month){
-        if (line ~ /, $/){
-            printf "%s\n", substr(line, 0, length(line)-2)
-        }
-        line=$1 ", "
+        print line
+        line=$1 "\t"
     }
     else{
         if (NF == 1){
-            line=line $1 ", "
+            line=line $1 "\t"
         }
         else{
-            for(i=1; i<NF; i++){
-                line=line $i ", "
-            }
-            line=line $NF
-
+            line=line $0
         }
     }
-}' > $base_format/$format_file
+}
+END {
+    OFS="-"
+}
+' > $base_format/$format_file
 nkf -s --overwrite $base_format/$format_file
 return
