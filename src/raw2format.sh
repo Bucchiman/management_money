@@ -2,7 +2,7 @@
 #
 # FileName: 	raw2format
 # CreatedDate:  2022-07-10 20:52:42 +0900
-# LastModified: 2022-07-11 00:42:30 +0900
+# LastModified: 2022-07-11 18:00:30 +0900
 #
 
 _usage(){
@@ -21,14 +21,16 @@ do
 done
 
 base_raw="../datas/raw"
-base_format="../datas/format"
+base_format="../datas/format/${raw_file}"
 
-if [[ -e $base_format/$format_file ]]
+mkdir -p ${base_format}
+if [[ -e ${base_format}/${format_file} ]]
 then
-    rm $base_format/$format_file
+    rm ${base_format}/${format_file}
 fi
 
-cat "$base_raw/$raw_file" | awk -F '[\t]' -v month=$month '
+echo "date\tstore\tspent\tvia\tmain\tsub" > ${base_format}/${format_file}
+cat "${base_raw}/${raw_file}" | awk -F '[\t]' -v month=${month} '
 BEGIN {
     i=0
     line=""
@@ -49,7 +51,7 @@ substr($1, 0, 2) != month{
     }
 }
 
-' > $base_format/$format_file
+' >> ${base_format}/${format_file}
 #nkf -s --overwrite $base_format/$format_file
-nkf -w8 --overwrite $base_format/$format_file
+nkf -w8 --overwrite ${base_format}/${format_file}
 return
